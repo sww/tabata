@@ -65,6 +65,7 @@ if __name__ == "__main__":
 
     logging_kwargs: Dict[str, Any] = {
         "format": "%(asctime)s %(levelname)s %(message)s",
+        "level": logging.INFO,
     }
 
     if args.debug:
