@@ -9,6 +9,9 @@ import time
 from typing import Any, Dict
 
 
+SECOND = 1
+
+
 class SessionType(enum.Enum):
     ACTIVITY = "ACTIVITY"
     REST = "REST"
@@ -29,7 +32,7 @@ def session(type: SessionType, countdown: int, notify: int = 5) -> None:
         if i <= notify:
             say(f"{i}")
 
-        time.sleep(1)
+        time.sleep(SECOND)
         i -= 1
 
     return
