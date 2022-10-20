@@ -22,9 +22,9 @@ def say(s: str) -> None:
     subprocess.run(["say", s])
 
 
-def session(type: SessionType, countdown: int, notify: int = 5) -> None:
+def interval(type: SessionType, length: int, notify: int = 5) -> None:
     say(f"Begin {type.value}")
-    i = countdown
+    i = length
     while i > 0:
         if i == notify:
             say(f"{type.value} ends in")
@@ -38,18 +38,18 @@ def session(type: SessionType, countdown: int, notify: int = 5) -> None:
     return
 
 
-def tabata_session(rounds=8):
+def tabata_session(cycles=8):
     logging.info("Begin Tabata session")
 
-    round = 1
-    while round <= rounds:
-        logging.info("Round %s of %s", round, rounds)
-        session(SessionType.ACTIVITY, 20)
+    cycle = 1
+    while cycle <= cycles:
+        logging.info("Round %s of %s", cycle, cycles)
+        interval(SessionType.ACTIVITY, 20)
 
-        if round < rounds:
-            session(SessionType.REST, 10)
+        if cycle < cycles:
+            interval(SessionType.REST, 10)
 
-        round += 1
+        cycle += 1
 
     logging.info("End Tabata session")
 
