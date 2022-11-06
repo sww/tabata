@@ -38,7 +38,7 @@ def interval(type: SessionType, length: int, notify: int = 5) -> None:
     return
 
 
-def tabata_session(cycles=8):
+def tabata_session(cycles=8) -> None:
     logging.info("Begin Tabata session")
 
     cycle = 1
