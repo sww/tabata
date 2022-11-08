@@ -58,6 +58,7 @@ def tabata_session(cycles=8) -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
+    parser.add_argument("-c", "--countdown", action="store", type=int, default=0)
     parser.add_argument("-d", "--debug", action="store_true", default=False)
     parser.add_argument("rounds", action="store", nargs="?", type=int, default=8)
 
@@ -72,5 +73,9 @@ if __name__ == "__main__":
         logging_kwargs["level"] = logging.DEBUG
 
     logging.basicConfig(**logging_kwargs)
+
+    if args.countdown > 0:
+        say(f"Session begins in {args.countdown} seconds")
+        time.sleep(args.countdown)
 
     tabata_session(args.rounds)
