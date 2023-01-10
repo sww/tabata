@@ -3,6 +3,7 @@
 import argparse
 import enum
 import logging
+import sched
 import subprocess
 import time
 
@@ -17,25 +18,33 @@ class SessionType(enum.Enum):
     REST = "REST"
 
 
+def noop():
+    return
+
+
 def say(s: str) -> None:
     logging.debug("say %s", s)
-    subprocess.Popen(["say", "-r", "190", "-v", "Daniel", s])
+    subprocess.Popen(["say", "-v", "Daniel", s])
 
 
 def interval(type: SessionType, length: int, notify: int = 5) -> None:
-    say(f"Begin {type.value}")
-    i = length
-    while i > 0:
-        if i == notify + 1:
-            say(f"{type.value} ends in")
+    s = sched.scheduler()
+    s.enter(0, 0, say, argument=(f"Begin {type.value}",))
 
-        if i <= notify:
-            say(f"{i}")
+    # Notification begins after `notify_at` seconds.
+    notify_at = length - notify
 
-        time.sleep(SECOND)
-        i -= 1
+    # Subtract some time because we don't want the "{type.value} ends in" output
+    # to overlap into the count down.
+    s.enter(notify_at - 1.5, 1, say, argument=(f"{type.value} ends in",))
 
-    return
+    for i in range(notify):
+        s.enter(notify_at + i, i, say, argument=(f"{notify - i}",))
+
+    # So we're blocking for `length` seconds.
+    s.enter(length, 1, noop)
+
+    s.run(blocking=True)
 
 
 def tabata_session(cycles=8) -> None:
