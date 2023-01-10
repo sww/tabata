@@ -19,14 +19,14 @@ class SessionType(enum.Enum):
 
 def say(s: str) -> None:
     logging.debug("say %s", s)
-    subprocess.run(["say", s])
+    subprocess.Popen(["say", "-r", "190", "-v", "Daniel", s])
 
 
 def interval(type: SessionType, length: int, notify: int = 5) -> None:
     say(f"Begin {type.value}")
     i = length
     while i > 0:
-        if i == notify:
+        if i == notify + 1:
             say(f"{type.value} ends in")
 
         if i <= notify:
